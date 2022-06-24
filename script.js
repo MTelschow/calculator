@@ -147,9 +147,6 @@ btnDivide.addEventListener('click', e => useOperator('/'));
 const btnModulo = document.getElementById('%');
 btnModulo.addEventListener('click', e => useOperator('%'));
 
-
-
-
 const btnEquals = document.getElementById('=');
 btnEquals.addEventListener('click', e => displayResult());
 
