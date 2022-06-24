@@ -39,7 +39,8 @@ body {
     align-items: flex-end;   
 }
 
-#calculations {
+#calcultion {
+    min-height: 23px;
     font-size: 20px;
     text-align: end;
 }
