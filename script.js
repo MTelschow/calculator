@@ -2,7 +2,8 @@ let calcultion = document.getElementById('calcultion');
 let results = document.getElementById('results');
 
 let inputNumber = '';
-let firstNumber = undefined;
+let savedNumber = undefined;
+let operator = undefined;
 
 //Funcions
 
@@ -10,7 +11,8 @@ function reset(){
     calcultion.innerHTML = '';
     results.innerHTML = '0';
     inputNumber = '';
-    firstNumber = undefined;
+    savedNumber = undefined;
+    operator = undefined;
 }
 
 function removeDigit(){
@@ -29,6 +31,21 @@ function addDigit(digit){
     
 }
 
+
+
+function useOperator (newOperator){
+    makeInputValid();
+    if(operator !== undefined){
+        inputNumber = calculte(savedNumber, inputNumber);
+    }
+    savedNumber = inputNumber;
+    inputNumber = '';
+    operator = newOperator;
+    calcultion.innerHTML = `${savedNumber} ${operator}`;
+    results.innerHTML = '0';
+
+}
+
 function makeInputValid (){
     if (inputNumber == ''){
         inputNumber = '0';
@@ -36,27 +53,46 @@ function makeInputValid (){
     if (inputNumber.charAt(inputNumber.length - 1) == "."){
         inputNumber = inputNumber.slice(0,-1);
     }
-    results.innerHTML = inputNumber;
+    inputNumber = parseFloat(inputNumber);
+}
+
+function calculte (a, b){
+    if(operator == '+'){
+        return a+b;
+    }
+    if(operator == '-'){
+        return a-b;
+    }
+    if(operator == 'x'){
+        return a*b;
+    }
+    if(operator == '/'){
+        if(b==0){
+            alert('ERROR! CANT DIVIDE BY 0! Please clear your calculator')
+        }
+        return a/b;
+    }
+    if(operator == '%'){
+        if(b==0){
+            alert('ERROR! CANT DIVIDE BY 0! Please clear your calculator')
+        }
+        return a%b;
+    }
 }
 
 
-function add (a, b){
-    return a+b;
+function displayResult(){
+    if(operator !== undefined){
+        makeInputValid();
+        let temp = inputNumber;
+        inputNumber = `${calculte(savedNumber, inputNumber)}`;
+        calcultion.innerHTML = `${savedNumber} ${operator} ${temp} =`;
+        results.innerHTML = inputNumber;
+        savedNumber = undefined;
+        operator = undefined;
+        }
+    
 }
-function subtract (a, b){
-    return a-b;
-}
-function mutiply (a, b){
-    return a*b;
-}
-function divide (a, b){
-    return a/b;
-}
-function modulo (a, b){
-    return a%b;
-}
-
-
 
 
 
@@ -100,6 +136,20 @@ btnDot.addEventListener('click', function(){
 
 
 //Operators
+const btnAdd = document.getElementById('+');
+btnAdd.addEventListener('click', e => useOperator('+'));
+const btnSubtract = document.getElementById('-');
+btnSubtract.addEventListener('click', e => useOperator('-'));
+const btnMultiply = document.getElementById('x');
+btnMultiply.addEventListener('click', e => useOperator('x'));
+const btnDivide = document.getElementById('/');
+btnDivide.addEventListener('click', e => useOperator('/'));
+const btnModulo = document.getElementById('%');
+btnModulo.addEventListener('click', e => useOperator('%'));
+
+
+
+
 const btnEquals = document.getElementById('=');
-btnEquals.addEventListener('click', function(){
-})
+btnEquals.addEventListener('click', e => displayResult());
+
